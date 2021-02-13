@@ -14,9 +14,13 @@ public class Obstacle : MonoBehaviour
     [SerializeField]
     private float speed;
 
-    /// <summary>
-    /// If doesn't work try with coroutine
-    /// </summary>
+    private Player player;
+
+    private void Awake()
+    {
+        player = FindObjectOfType<Player>();
+    }
+
     private void Start()
     {
         Builder();
@@ -24,11 +28,14 @@ public class Obstacle : MonoBehaviour
 
     void Update()
     {
-        transform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
-
-        if (transform.position.x < -10)
+        if (player != null && player.isStarted)
         {
-            Destroy(gameObject);
+            transform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
+
+            if (transform.position.x < -10)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

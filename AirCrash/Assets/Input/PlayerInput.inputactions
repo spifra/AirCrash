@@ -17,19 +17,8 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "41010cde-36d4-46d1-a18a-0a1d788b7cdf",
-                    "path": "<Mouse>/press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2065385d-517e-4e85-a389-9606c2fce181",
-                    "path": "<Touchscreen>/press",
+                    "path": "<Pointer>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
