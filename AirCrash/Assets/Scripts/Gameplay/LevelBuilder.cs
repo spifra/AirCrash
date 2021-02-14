@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LevelBuilder : MonoBehaviour
 {
@@ -16,15 +17,24 @@ public class LevelBuilder : MonoBehaviour
     [SerializeField]
     private float obstaclesGap;
 
+    [SerializeField]
+    private float startingObstaclesPosition;
+
     private float latestXPosition;
+
+    private void Awake()
+    {
+        latestXPosition = startingObstaclesPosition;
+
+        BuildingObstacles(startingObstaclesNumber);
+
+    }
 
     /// <summary>
     /// In the start we build the starting obstacles and we start the coroutine to continue to build them
     /// </summary>
     private void Start()
     {
-        BuildingObstacles(startingObstaclesNumber);
-
         StartCoroutine(IBuilder());
     }
 
@@ -60,7 +70,17 @@ public class LevelBuilder : MonoBehaviour
         for (int i = 0; i < obstaclesNumber; i++)
         {
             int gap = Random.Range(2, 8);
-            CreateGapAndObstacles(gap, 3f, latestXPosition  + obstaclesGap);
+            CreateGapAndObstacles(gap, 3f, latestXPosition + obstaclesGap);
+        }
+    }
+
+    public void DestroyObstaclesForRespawn()
+    {
+        List<Obstacle> obstaclesToDestroy = FindObjectsOfType<Obstacle>().Where(x => x.transform.position.x <= LevelManager.Instance.lastPlayerPosition.x + 2).ToList();
+
+        foreach (Obstacle o in obstaclesToDestroy)
+        {
+            Destroy(o.gameObject);
         }
     }
 }

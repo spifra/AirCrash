@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -15,19 +15,23 @@ public class Player : MonoBehaviour
     public bool isPaused;
 
     [SerializeField]
-    private GameObject UI;
+    private inGameMenu UI;
 
     private Rigidbody2D rigidBody;
     private Animator anim;
+
+    private UnityEvent OnDeath = new UnityEvent();
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        OnDeath.AddListener(LevelManager.Instance.OnPlayerDeath);
+        OnDeath.AddListener(AdsManager.Instance.RequestAndShowInterstitialOnGameOver);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (transform.position.y <= -5f || transform.position.y >= 5f)
         {
@@ -75,6 +79,7 @@ public class Player : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("UI + AD");
+        OnDeath.Invoke();
     }
+
 }

@@ -14,12 +14,7 @@ public class Obstacle : MonoBehaviour
     [SerializeField]
     private float speed;
 
-    private Player player;
-
-    private void Awake()
-    {
-        player = FindObjectOfType<Player>();
-    }
+    private bool isScored;
 
     private void Start()
     {
@@ -28,7 +23,7 @@ public class Obstacle : MonoBehaviour
 
     void Update()
     {
-        if (player != null && player.isStarted)
+        if (LevelManager.Instance.IsPlayerValid())
         {
             transform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
 
@@ -36,7 +31,17 @@ public class Obstacle : MonoBehaviour
             {
                 Destroy(gameObject);
             }
+            else if (!isScored && transform.position.x < -0.5f)
+            {
+                AddToScore();
+            }
         }
+    }
+
+    private void AddToScore()
+    {
+        isScored = true;
+        LevelManager.Instance.score++;
     }
 
     private void Builder()

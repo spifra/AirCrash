@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2956729373655846119}
   - component: {fileID: 2956729373655846116}
   m_Layer: 0
-  m_Name: LevelManager
+  m_Name: LevelBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstaclePrefab: {fileID: -6480941409659143104, guid: ae56adee6a2e79c4d93b45f4952696ac, type: 3}
   obstacleContainer: {fileID: 0}
-  speed: 2
-  gap1: 3
-  gap2: 0
+  startingObstaclesNumber: 5
+  obstaclesGap: 3
+  startingObstaclesPosition: 4
