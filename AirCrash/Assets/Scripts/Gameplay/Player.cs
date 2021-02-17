@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -13,9 +14,6 @@ public class Player : MonoBehaviour
     public bool isStarted;
     [HideInInspector]
     public bool isPaused;
-
-    [SerializeField]
-    private inGameMenu UI;
 
     private Rigidbody2D rigidBody;
     private Animator anim;
@@ -28,7 +26,9 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         OnDeath.AddListener(LevelManager.Instance.OnPlayerDeath);
-        OnDeath.AddListener(AdsManager.Instance.RequestAndShowInterstitialOnGameOver);
+        isStarted = false;
+        isPaused = false;
+
     }
 
     private void FixedUpdate()
@@ -44,14 +44,22 @@ public class Player : MonoBehaviour
     /// </summary>
     public void OnJump(InputValue value)
     {
+        
         if (!EventSystem.current.IsPointerOverGameObject() && !isPaused)
+        {
             rigidBody.velocity = Vector2.up * jumpForce;
+            
+        }
 
         if (!isStarted)
         {
             isStarted = true;
             rigidBody.constraints = RigidbodyConstraints2D.None;
             rigidBody.freezeRotation = true;
+        }
+        if (isPaused)
+        {
+            isPaused = false;
         }
     }
 
@@ -74,6 +82,7 @@ public class Player : MonoBehaviour
     //Called by death animation
     private void Death()
     {
+        AdsManager.Instance.RequestAndShowInterstitialOnGameOver();
         Destroy(gameObject);
     }
 

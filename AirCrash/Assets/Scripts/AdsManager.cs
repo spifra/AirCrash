@@ -1,8 +1,10 @@
 using GoogleMobileAds.Api;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class AdsManager : MonoBehaviour
 {
@@ -24,17 +26,16 @@ public class AdsManager : MonoBehaviour
     }
     #endregion
 
-    private BannerView bannerView;
+    [HideInInspector]
+    public BannerView bannerView;
     public InterstitialAd interstitial;
     private RewardedAd rewardedAd;
 
-    //private string adId = "ca-app-pub-2811790606724562~1770905146";
+    private string appId = "ca-app-pub-2811790606724562~1770905146";
 
     private string TESTBannerID = "ca-app-pub-3940256099942544/6300978111";
     private string TESTInterstitialID = "ca-app-pub-3940256099942544/1033173712";
-    private string TESTRewardedID = "ca-app-pub-3940256099942544/1033173713";
-
-    //private string myPhoneID = "bfbed49a-fcce-408f-ab2a-f2b49167d2fc";
+    private string TESTRewardedID = "ca-app-pub-3940256099942544/5224354917";
 
     [HideInInspector]
     public inGameMenu inGameMenu;
@@ -46,24 +47,13 @@ public class AdsManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-
-    //TODO: target ads for children
-
     private void Start()
     {
-
-        // Initialize the Google Mobile Ads SDK.
-        MobileAds.Initialize(initStatus => { });
-
+        MobileAds.Initialize(appId);
     }
 
-    /// <summary>
-    /// Banner
-    /// </summary>
     public void RequestAndShowBanner()
     {
-        //TODO: Change to adId;
-        string adUnitId = TESTBannerID;
 
         // Clean up banner before reusing
         if (bannerView != null)
@@ -71,14 +61,15 @@ public class AdsManager : MonoBehaviour
             bannerView.Destroy();
         }
 
-        // Create a banner at the top of the screen.
-        bannerView = new BannerView(adUnitId, AdSize.GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(Screen.width), AdPosition.Top);
+        // Create a banner at the top of the screen.      
+        bannerView = new BannerView(TESTBannerID, AdSize.Banner, AdPosition.Top);
 
-        // Create an empty ad request.
+        bannerView.OnAdLoaded += HandleOnAdLoaded;
+        bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
+
         AdRequest request = new AdRequest.Builder().Build();
 
-        // Load the banner with the request.
-        bannerView.LoadAd(request);
+        this.bannerView.LoadAd(request);
     }
 
     #region INTERSTITIAL
@@ -87,57 +78,52 @@ public class AdsManager : MonoBehaviour
     /// </summary>
     public void RequestInterstitial()
     {
-        //TODO: Change to adId;
-        string adUnitId = TESTInterstitialID;
-
-        // Clean up banner before reusing
-        if (interstitial != null)
-        {
-            interstitial.Destroy();
-        }
 
         // Initialize an InterstitialAd.
-        interstitial = new InterstitialAd(adUnitId);
+        this.interstitial = new InterstitialAd(TESTInterstitialID);
+
+        this.interstitial.OnAdLoaded += ShowIntestitial;
+        this.interstitial.OnAdClosed += DestroyIntestitial;
 
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
+
         // Load the interstitial with the request.
-        interstitial.LoadAd(request);
+        this.interstitial.LoadAd(request);
     }
 
-    /// <summary>
-    /// Show interstitial
-    /// </summary>
-    public void ShowIntestitial()
+    internal void ShowIntestitial(object sender, EventArgs e)
     {
-        if (interstitial.IsLoaded())
-        {
-            interstitial.Show();
-        }
+        this.interstitial.Show();
     }
+
+    internal void DestroyIntestitial(object sender, EventArgs e)
+    {
+        this.interstitial.Destroy();
+    }
+
     #endregion
 
     #region REWARDED AD
 
     public void RequesteRewardedAd()
     {
-        //TODO: Change to adId;
-        string adUnitId = TESTRewardedID;
 
-        rewardedAd = new RewardedAd(adUnitId);
+        this.rewardedAd = new RewardedAd(TESTRewardedID);
 
+        this.rewardedAd.OnUserEarnedReward += LevelManager.Instance.RespawnPlayer;
+        this.rewardedAd.OnAdLoaded += UserChoseToWatchAd;
+        
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
+
         // Load the rewarded ad with the request.
-        rewardedAd.LoadAd(request);
+        this.rewardedAd.LoadAd(request);
     }
 
-    public void UserChoseToWatchAd()
+    internal void UserChoseToWatchAd(object sender, EventArgs e)
     {
-        if (rewardedAd.IsLoaded())
-        {
-            rewardedAd.Show();
-        }
+        this.rewardedAd.Show();
     }
 
     public void HandleRewardedAdLoaded(object sender, EventArgs args)
@@ -209,20 +195,27 @@ public class AdsManager : MonoBehaviour
     #endregion
 
     /// <summary>
+    /// Not used
     /// First ad and banner in the main menu
     /// </summary>
     public void RequestAndShowFirstInterstitialAndBanner()
     {
         RequestInterstitial();
+        this.interstitial.OnAdClosed += CallBanner;
 
-        interstitial.OnAdClosed += CallBanner;
-
-        ShowIntestitial();
     }
 
     private void CallBanner(object sender, EventArgs e)
     {
         RequestAndShowBanner();
+    }
+
+
+    public void DestroyInterstitial()
+    {
+
+        if(this.interstitial != null)
+        this.interstitial.Destroy();
     }
 
     /// <summary>
@@ -232,14 +225,11 @@ public class AdsManager : MonoBehaviour
     {
         RequestInterstitial();
         interstitial.OnAdClosed += inGameMenu.RestartGame;
-        ShowIntestitial();
     }
 
     public void RequestedAndShowRewardedAd()
     {
         RequesteRewardedAd();
-        rewardedAd.OnUserEarnedReward += LevelManager.Instance.RespawnPlayer;
-        UserChoseToWatchAd();
     }
 
 }

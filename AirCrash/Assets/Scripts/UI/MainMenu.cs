@@ -2,16 +2,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
-    public void Start()
+    private void Start()
     {
-        AdsManager.Instance.RequestAndShowFirstInterstitialAndBanner();
+        AdsManager.Instance.RequestAndShowBanner();
     }
-
+ 
     public void OnPlay()
     {
         SceneManager.LoadScene("Gameplay");
     }
-
 
     //TODO: Highscores table 1)New scene 2)UI
     public void OnHighScore()

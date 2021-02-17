@@ -1,6 +1,8 @@
 using GoogleMobileAds.Api;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LevelManager : MonoBehaviour
 {
@@ -59,12 +61,22 @@ public class LevelManager : MonoBehaviour
 
     /// <summary>
     /// Call the method to destroy the obstacle and instantiate the player
+    /// 
     /// </summary>
     internal void RespawnPlayer(object sender, Reward e)
     {
         levelBuilder.DestroyObstaclesForRespawn();
 
-        GameObject go = Instantiate(playerPrefab, lastPlayerPosition, Quaternion.identity);
+        ResumeGame();
+
+        StartCoroutine(IRespawnPlayer());
+    }
+
+    private IEnumerator IRespawnPlayer()
+    {
+        yield return new WaitForSeconds(3f);
+        GameObject go = Instantiate(playerPrefab, new Vector2(0, 0), Quaternion.identity);
+        currentPlayer = null;
         currentPlayer = go.GetComponent<Player>();
     }
 
@@ -89,11 +101,13 @@ public class LevelManager : MonoBehaviour
 
     public bool IsPlayerValid()
     {
-        if (currentPlayer.isPaused || !currentPlayer.isStarted)
+        if (currentPlayer != null)
         {
-            return false;
+            if (!currentPlayer.isPaused && currentPlayer.isStarted)
+            {
+                return true;
+            }
         }
-
-        return true;
+        return false;
     }
 }

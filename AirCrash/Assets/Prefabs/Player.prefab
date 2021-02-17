@@ -102,7 +102,7 @@ MonoBehaviour:
   jumpForce: 5
   isStarted: 0
   isPaused: 0
-  UI: {fileID: 0}
+  debug: {fileID: 0}
 --- !u!50 &4170965304893024100
 Rigidbody2D:
   serializedVersion: 4
@@ -149,8 +149,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Tap
   m_DefaultActionMap: Pinput
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

@@ -2,9 +2,9 @@ using GoogleMobileAds.Api;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class inGameMenu : MonoBehaviour
 {
@@ -20,6 +20,7 @@ public class inGameMenu : MonoBehaviour
     private void Awake()
     {
         AdsManager.Instance.inGameMenu = this;
+        AdsManager.Instance.bannerView.Destroy();
     }
 
     /// <summary>
@@ -41,8 +42,7 @@ public class inGameMenu : MonoBehaviour
 
     public void OnHome()
     {
-        Debug.Log("Home");
-
+        LevelManager.Instance.ResumeGame();
         SceneManager.LoadScene("Menu");
     }
 
@@ -53,7 +53,7 @@ public class inGameMenu : MonoBehaviour
     public void OnRestart()
     {
         isAlreadyRewarded = false;
-
+        LevelManager.Instance.ResumeGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -75,17 +75,17 @@ public class inGameMenu : MonoBehaviour
     /// </summary>
     public void OnGameOver()
     {
-        LevelManager.Instance.PauseGame();
-
         panel.SetActive(true);
         gameoverPopup.SetActive(true);
+
+        LevelManager.Instance.PauseGame();
 
         if (isAlreadyRewarded)
         {
             gameoverPopup.transform.Find("Continue").gameObject.SetActive(false);
         }
 
-        gameoverPopup.transform.Find("DistanceText").GetComponent<TMP_Text>().text = "Score: " + LevelManager.Instance.score / 2;
+        gameoverPopup.transform.Find("DistanceText").GetComponent<Text>().text = "Score: " + LevelManager.Instance.score / 2;
 
     }
 
