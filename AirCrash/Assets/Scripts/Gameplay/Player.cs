@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     public void OnJump(InputValue value)
     {
 
-        if (!EventSystem.current.IsPointerOverGameObject() && !isPaused)
+        if (!EventSystem.current.IsPointerOverGameObject() && !isPaused && isStarted)
         {
             rigidBody.velocity = Vector2.up * jumpForce;
         }
@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
             isStarted = true;
             rigidBody.constraints = RigidbodyConstraints2D.None;
             rigidBody.freezeRotation = true;
+            rigidBody.velocity = Vector2.up;
         }
         if (isPaused)
         {
@@ -66,7 +67,6 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Obstacle")
         {
-            Debug.Log("Lost!");
             DeathAnimation();
         }
     }
