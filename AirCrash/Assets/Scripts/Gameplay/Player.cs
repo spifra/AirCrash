@@ -44,11 +44,10 @@ public class Player : MonoBehaviour
     /// </summary>
     public void OnJump(InputValue value)
     {
-        
+
         if (!EventSystem.current.IsPointerOverGameObject() && !isPaused)
         {
             rigidBody.velocity = Vector2.up * jumpForce;
-            
         }
 
         if (!isStarted)
@@ -82,7 +81,6 @@ public class Player : MonoBehaviour
     //Called by death animation
     private void Death()
     {
-        AdsManager.Instance.RequestAndShowInterstitialOnGameOver();
         Destroy(gameObject);
     }
 

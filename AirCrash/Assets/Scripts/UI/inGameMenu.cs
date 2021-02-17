@@ -42,9 +42,9 @@ public class inGameMenu : MonoBehaviour
 
     public void OnHome()
     {
-        LevelManager.Instance.ResumeGame();
-        SceneManager.LoadScene("Menu");
+        AdsManager.Instance.RequestAndShowInterstitialOnHome();
     }
+
 
     /// <summary>
     /// When the player tap on restart
@@ -53,8 +53,7 @@ public class inGameMenu : MonoBehaviour
     public void OnRestart()
     {
         isAlreadyRewarded = false;
-        LevelManager.Instance.ResumeGame();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        AdsManager.Instance.RequestAndShowInterstitialOnRestart();
     }
 
     /// <summary>
@@ -99,14 +98,4 @@ public class inGameMenu : MonoBehaviour
         gameoverPopup.SetActive(false);
         AdsManager.Instance.RequestedAndShowRewardedAd();
     }
-
-    /// <summary>
-    /// Called by AdsManager after ads on death
-    /// </summary>
-
-    internal void RestartGame(object sender, EventArgs e)
-    {
-        OnGameOver();
-    }
-
 }

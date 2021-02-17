@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -39,6 +40,11 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public Vector2 lastPlayerPosition;
 
+    [SerializeField]
+    private GameObject resurrectionPrefab;
+
+    private GameObject resurrection;
+
     [HideInInspector]
     public int score;
 
@@ -74,7 +80,12 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator IRespawnPlayer()
     {
-        yield return new WaitForSeconds(3f);
+        resurrection = Instantiate(resurrectionPrefab);
+
+        yield return new WaitForSeconds(2f);
+
+        Destroy(resurrection);
+
         GameObject go = Instantiate(playerPrefab, new Vector2(0, 0), Quaternion.identity);
         currentPlayer = null;
         currentPlayer = go.GetComponent<Player>();
@@ -97,6 +108,7 @@ public class LevelManager : MonoBehaviour
     public void OnPlayerDeath()
     {
         lastPlayerPosition = currentPlayer.transform.position;
+        UI.OnGameOver();
     }
 
     public bool IsPlayerValid()
@@ -109,5 +121,26 @@ public class LevelManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void LoadNewPlayer()
+    {
+        levelBuilder.DestroyObstaclesForRespawn();
+
+        GameObject go = Instantiate(playerPrefab, new Vector2(0, 0), Quaternion.identity);
+        currentPlayer = null;
+        currentPlayer = go.GetComponent<Player>();
+    }
+
+    internal void GoToHome(object sender, EventArgs e)
+    {
+        ResumeGame();
+        SceneManager.LoadScene("Menu");
+    }
+
+    internal void Restart(object sender, EventArgs e)
+    {
+        ResumeGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

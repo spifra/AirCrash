@@ -113,7 +113,7 @@ public class AdsManager : MonoBehaviour
 
         this.rewardedAd.OnUserEarnedReward += LevelManager.Instance.RespawnPlayer;
         this.rewardedAd.OnAdLoaded += UserChoseToWatchAd;
-        
+
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
 
@@ -214,22 +214,25 @@ public class AdsManager : MonoBehaviour
     public void DestroyInterstitial()
     {
 
-        if(this.interstitial != null)
-        this.interstitial.Destroy();
-    }
-
-    /// <summary>
-    /// Game over Ad
-    /// </summary>
-    public void RequestAndShowInterstitialOnGameOver()
-    {
-        RequestInterstitial();
-        interstitial.OnAdClosed += inGameMenu.RestartGame;
+        if (this.interstitial != null)
+            this.interstitial.Destroy();
     }
 
     public void RequestedAndShowRewardedAd()
     {
         RequesteRewardedAd();
+    }
+
+    public void RequestAndShowInterstitialOnHome()
+    {
+        RequestInterstitial();
+        interstitial.OnAdClosed += LevelManager.Instance.GoToHome;
+    }
+
+    public void RequestAndShowInterstitialOnRestart()
+    {
+        RequestInterstitial();
+        interstitial.OnAdClosed += LevelManager.Instance.Restart;
     }
 
 }
