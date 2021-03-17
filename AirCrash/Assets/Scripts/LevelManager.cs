@@ -67,7 +67,6 @@ public class LevelManager : MonoBehaviour
 
     /// <summary>
     /// Call the method to destroy the obstacle and instantiate the player
-    /// 
     /// </summary>
     internal void RespawnPlayer(object sender, Reward e)
     {
@@ -135,12 +134,20 @@ public class LevelManager : MonoBehaviour
     internal void GoToHome(object sender, EventArgs e)
     {
         ResumeGame();
+        if (score != 0)
+        {
+            Leaderboard.instance.AddScoreToLeaderboard(score);
+        }
         SceneManager.LoadScene("Menu");
     }
 
     internal void Restart(object sender, EventArgs e)
     {
         ResumeGame();
+        if (score != 0)
+        {
+            Leaderboard.instance.AddScoreToLeaderboard(score);
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

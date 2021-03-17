@@ -4,7 +4,7 @@ public class MainMenu : MonoBehaviour
 {
     private void Start()
     {
-        AdsManager.Instance.RequestAndShowBanner();
+        AdsManager.instance.RequestAndShowBanner();
     }
  
     public void OnPlay()

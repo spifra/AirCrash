@@ -6,25 +6,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class AdsManager : MonoBehaviour
+public class AdsManager : Singleton<AdsManager>
 {
-    #region Singleton
-    private static AdsManager instance;
-    public static AdsManager Instance
-    {
-        get
-        {
-            if (instance != null)
-            {
-                return instance;
-            }
-            else
-            {
-                return null;
-            }
-        }
-    }
-    #endregion
 
     [HideInInspector]
     public BannerView bannerView;
@@ -33,19 +16,16 @@ public class AdsManager : MonoBehaviour
 
     private string appId = "ca-app-pub-2811790606724562~1770905146";
 
-    private string TESTBannerID = "ca-app-pub-3940256099942544/6300978111";
-    private string TESTInterstitialID = "ca-app-pub-3940256099942544/1033173712";
-    private string TESTRewardedID = "ca-app-pub-3940256099942544/5224354917";
+    //private string TESTBannerID = "ca-app-pub-3940256099942544/6300978111";
+    //private string TESTInterstitialID = "ca-app-pub-3940256099942544/1033173712";
+    //private string TESTRewardedID = "ca-app-pub-3940256099942544/5224354917";
+    
+    private string bannerId = "ca-app-pub-2811790606724562/9611960040";
+    private string interstitialID = "ca-app-pub-2811790606724562/6795236775";
+    private string rewardedID = "ca-app-pub-2811790606724562/3413027983";
 
     [HideInInspector]
     public inGameMenu inGameMenu;
-
-    private void Awake()
-    {
-        instance = this;
-
-        DontDestroyOnLoad(gameObject);
-    }
 
     private void Start()
     {
@@ -62,7 +42,7 @@ public class AdsManager : MonoBehaviour
         }
 
         // Create a banner at the top of the screen.      
-        bannerView = new BannerView(TESTBannerID, AdSize.Banner, AdPosition.Top);
+        bannerView = new BannerView(bannerId, AdSize.Banner, AdPosition.Top);
 
         bannerView.OnAdLoaded += HandleOnAdLoaded;
         bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
@@ -80,7 +60,7 @@ public class AdsManager : MonoBehaviour
     {
 
         // Initialize an InterstitialAd.
-        this.interstitial = new InterstitialAd(TESTInterstitialID);
+        this.interstitial = new InterstitialAd(interstitialID);
 
         this.interstitial.OnAdLoaded += ShowIntestitial;
         this.interstitial.OnAdClosed += DestroyIntestitial;
@@ -109,7 +89,7 @@ public class AdsManager : MonoBehaviour
     public void RequesteRewardedAd()
     {
 
-        this.rewardedAd = new RewardedAd(TESTRewardedID);
+        this.rewardedAd = new RewardedAd(rewardedID);
 
         this.rewardedAd.OnUserEarnedReward += LevelManager.Instance.RespawnPlayer;
         this.rewardedAd.OnAdLoaded += UserChoseToWatchAd;

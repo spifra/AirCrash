@@ -19,8 +19,8 @@ public class inGameMenu : MonoBehaviour
 
     private void Awake()
     {
-        AdsManager.Instance.inGameMenu = this;
-        AdsManager.Instance.bannerView.Destroy();
+        AdsManager.instance.inGameMenu = this;
+        AdsManager.instance.bannerView.Destroy();
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public class inGameMenu : MonoBehaviour
 
     public void OnHome()
     {
-        AdsManager.Instance.RequestAndShowInterstitialOnHome();
+        AdsManager.instance.RequestAndShowInterstitialOnHome();
     }
 
 
@@ -53,7 +53,8 @@ public class inGameMenu : MonoBehaviour
     public void OnRestart()
     {
         isAlreadyRewarded = false;
-        AdsManager.Instance.RequestAndShowInterstitialOnRestart();
+        AdsManager.instance
+            .RequestAndShowInterstitialOnRestart();
     }
 
     /// <summary>
@@ -74,9 +75,11 @@ public class inGameMenu : MonoBehaviour
     /// </summary>
     public void OnGameOver()
     {
-        panel.SetActive(true);
-        gameoverPopup.SetActive(true);
-
+        if (panel != null && gameoverPopup != null)
+        {
+            panel.SetActive(true);
+            gameoverPopup.SetActive(true);
+        }
         LevelManager.Instance.PauseGame();
 
         if (isAlreadyRewarded)
@@ -96,6 +99,6 @@ public class inGameMenu : MonoBehaviour
         isAlreadyRewarded = true;
         panel.SetActive(false);
         gameoverPopup.SetActive(false);
-        AdsManager.Instance.RequestedAndShowRewardedAd();
+        AdsManager.instance.RequestedAndShowRewardedAd();
     }
 }

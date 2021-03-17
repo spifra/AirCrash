@@ -69,7 +69,7 @@ public class LevelBuilder : MonoBehaviour
     {
         for (int i = 0; i < obstaclesNumber; i++)
         {
-            int gap = Random.Range(2, 8);
+            float gap = Random.Range(3.5f, 7.5f);
             CreateGapAndObstacles(gap, 3f, latestXPosition + obstaclesGap);
         }
     }
