@@ -3,8 +3,8 @@
      Do not edit. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.example.games.mainlibproj"
-    android:versionCode="2"
-    android:versionName="2" >
+    android:versionCode="5"
+    android:versionName="5" >
 
      
 

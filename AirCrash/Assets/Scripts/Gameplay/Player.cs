@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
     private void DeathAnimation()
     {
         isPaused = true;
+        SoundEffectManager.instance.OnGameOver();
         anim.SetTrigger("Death");
     }
 

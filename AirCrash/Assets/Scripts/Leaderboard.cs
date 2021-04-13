@@ -33,7 +33,7 @@ public class Leaderboard : Singleton<Leaderboard>
     {
         if (Social.localUser.authenticated)
         {
-            Social.ReportScore(score, "CgkIs_PJwtccEAIQAA", success => { });
+            Social.ReportScore(score, "CgkIs_PJwtccEAIQAg", success => { });
         }
     }
 

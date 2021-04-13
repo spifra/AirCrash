@@ -80,7 +80,7 @@ public class LevelManager : MonoBehaviour
     private IEnumerator IRespawnPlayer()
     {
         resurrection = Instantiate(resurrectionPrefab);
-
+        SoundEffectManager.instance.OnRevival();
         yield return new WaitForSeconds(2f);
 
         Destroy(resurrection);
