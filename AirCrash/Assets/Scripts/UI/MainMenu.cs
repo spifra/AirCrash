@@ -2,6 +2,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
+
+    private void Awake()
+    {
+        
+    }
+
     private void Start()
     {
         AdsManager.instance.RequestAndShowBanner();
@@ -12,9 +18,8 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Gameplay");
     }
 
-    //TODO: Highscores table 1)New scene 2)UI
-    public void OnHighScore()
+    public void OnHighscores()
     {
-        Debug.Log("HighScore");
+        Leaderboard.instance.ShowLeaderboard();
     }
 }

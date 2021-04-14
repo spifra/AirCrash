@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1712620825}
-        m_TargetAssemblyTypeName: Leaderboard, Assembly-CSharp
-        m_MethodName: ShowLeaderboard
+      - m_Target: {fileID: 191073436}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: OnHighscores
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -37,11 +37,7 @@ public class Leaderboard : Singleton<Leaderboard>
 
     public void ShowLeaderboard()
     {
-        if (!Social.localUser.authenticated)
-        {
-            SignIn();
-        }
-        else
+        if (Social.localUser.authenticated)
         {
             Social.ShowLeaderboardUI();
         }
