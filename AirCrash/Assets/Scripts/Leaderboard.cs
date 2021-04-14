@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
@@ -39,7 +37,11 @@ public class Leaderboard : Singleton<Leaderboard>
 
     public void ShowLeaderboard()
     {
-        if (Social.localUser.authenticated)
+        if (!Social.localUser.authenticated)
+        {
+            SignIn();
+        }
+        else
         {
             Social.ShowLeaderboardUI();
         }

@@ -8,8 +8,12 @@ using UnityEngine.UI;
 
 public class inGameMenu : MonoBehaviour
 {
+    [Tooltip("Panel on pause menu")]
     [SerializeField]
-    private GameObject panel;
+    private GameObject firstPanel;
+    [Tooltip("Panel before ad")]
+    [SerializeField]
+    private GameObject secondPanel;
     [SerializeField]
     private GameObject pausePopup;
     [SerializeField]
@@ -32,7 +36,7 @@ public class inGameMenu : MonoBehaviour
 
         LevelManager.Instance.PauseGame();
 
-        panel.SetActive(true);
+        firstPanel.SetActive(true);
         pausePopup.SetActive(true);
     }
 
@@ -42,6 +46,7 @@ public class inGameMenu : MonoBehaviour
 
     public void OnHome()
     {
+        secondPanel.SetActive(true);
         AdsManager.instance.RequestAndShowInterstitialOnHome();
     }
 
@@ -53,8 +58,8 @@ public class inGameMenu : MonoBehaviour
     public void OnRestart()
     {
         isAlreadyRewarded = false;
-        AdsManager.instance
-            .RequestAndShowInterstitialOnRestart();
+        secondPanel.SetActive(true);
+        AdsManager.instance.RequestAndShowInterstitialOnRestart();
     }
 
     /// <summary>
@@ -64,7 +69,7 @@ public class inGameMenu : MonoBehaviour
     {
         Debug.Log("Resume");
 
-        panel.SetActive(false);
+        firstPanel.SetActive(false);
         pausePopup.SetActive(false);
 
         LevelManager.Instance.ResumeGame();
@@ -75,9 +80,9 @@ public class inGameMenu : MonoBehaviour
     /// </summary>
     public void OnGameOver()
     {
-        if (panel != null && gameoverPopup != null)
+        if (firstPanel != null && gameoverPopup != null)
         {
-            panel.SetActive(true);
+            firstPanel.SetActive(true);
             gameoverPopup.SetActive(true);
         }
         LevelManager.Instance.PauseGame();
@@ -97,8 +102,15 @@ public class inGameMenu : MonoBehaviour
     public void OnRewardedAd()
     {
         isAlreadyRewarded = true;
-        panel.SetActive(false);
+        firstPanel.SetActive(false);
         gameoverPopup.SetActive(false);
+        secondPanel.SetActive(true);
         AdsManager.instance.RequestedAndShowRewardedAd();
+    }
+
+    public void SetPanel(bool isVisible)
+    {
+        if (secondPanel != null)
+            secondPanel.SetActive(isVisible);
     }
 }

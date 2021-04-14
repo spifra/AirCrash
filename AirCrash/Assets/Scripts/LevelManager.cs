@@ -99,6 +99,8 @@ public class LevelManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        UI.SetPanel(false);
+
         if (currentPlayer != null)
             currentPlayer.isPaused = false;
         Time.timeScale = 1;
